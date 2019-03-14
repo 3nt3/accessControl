@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/nielsdingsbums/accessControl/api"
 	"net/http"
@@ -9,7 +10,9 @@ import (
 func main() {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/getUsers/", api.GetUsers)
+	r.HandleFunc("/getUsers", api.GetUsers)
+	r.HandleFunc("/createUser", api.CreateUser)
+	r.HandleFunc("/getUser/{id}", api.GetUser)
 
-	http.ListenAndServe(":8080", nil)
+	fmt.Print(http.ListenAndServe(":8000", r))
 }
