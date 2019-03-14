@@ -45,3 +45,26 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func HasAccess(w http.ResponseWriter, r *http.Request)  {
+	w.Header().Add("Content-Type", "application/json")
+
+	id, err := strconv.Atoi(mux.Vars(r)["id"])
+
+	if err != nil {
+		fmt.Printf("[-] [HasAccess] (getUser) err: %v\n", err)
+		return
+	}
+	if len(users)-1 >= id {
+		fmt.Printf("[+] [HasAccess] (getUser) id %d\n", id)
+	} else {
+		fmt.Printf("[-] [HasAccess] (getUser) id %d - index out of range!\n", id)
+		return
+	}
+
+	user := users[id]
+	hasAccess := user.Permission > 0
+
+	fmt.Printf("[+] [HasAccess] user %d (%s) has access: %t\n", user.ID, user.Name, hasAccess)
+
+	json.NewEncoder(w).Encode(user.Permission > 0)
+}
